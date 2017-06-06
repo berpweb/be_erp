@@ -12,11 +12,15 @@
     'installable': True,
     'depends': [
         'point_of_sale',
+        'sales_team',
+        'product',
     ],
     'data': [
         'views/pos_config_view.xml',
         'views/pos_estimate_order_view.xml',
         'views/pos_special_order_view.xml',
+        'views/sale_view.xml',
+        'views/product_template_view.xml',
     ],
     'demo': [],
     'qweb': [],
