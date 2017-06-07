@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sales_team.menu_base_partner" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+    <menuitem id="sales_team.menu_partner_form" name="Customers"
+              parent="point_of_sale.menu_point_of_sale" sequence="10" />
+
+    <menuitem action="product.product_category_action_form" groups="base.group_user"
+              id="sale.menu_product_category_action_form" parent="stock.menu_stock_inventory_control" sequence="50"/>
+
+    <menuitem action="product.product_uom_categ_form_action" id="stock.menu_stock_uom_categ_form_action"
+              parent="stock.menu_stock_inventory_control" sequence="55" groups="base.group_no_one"/>
+    <record id="stock.menu_stock_uom_categ_form_action" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+
+    <menuitem id="stock.menu_stock_uom_form_action" action="product.product_uom_form_action"
+              parent="stock.menu_stock_inventory_control" sequence="60" groups="base.group_no_one"/>
+    <record id="stock.menu_stock_uom_form_action" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+
+    <record id="base.menu_grant_menu_access" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+
+    <record id="stock.menu_action_inventory_form" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+    <record id="stock.menu_stock_warehouse_mgmt" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+    <record id="stock.stock_picking_type_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+    <record id="stock.menu_stock_scrap" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+    <record id="stock.menu_reordering_rules_config" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+
+    <record id="account.menu_finance" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+
+
+</odoo>

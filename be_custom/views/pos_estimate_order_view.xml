@@ -15,6 +15,7 @@
                     <field name="date_order"/>
                     <field name="partner_id" domain="[('customer', '=', True),('user_ids','=',False)]" context="{'search_default_customer':1}" attrs="{'readonly': [('state','=','invoiced')]}" required="1"/>
                     <field name="vehicle_id" attrs="{'invisible':[('partner_id','=',False)]}" domain="[('partner_id', '=', partner_id)]" context="{'default_partner_id':partner_id}"/>
+                    <field name="session_id" invisible="1"/>
                 </group>
                 <notebook colspan="4">
                     <page string="Products">
