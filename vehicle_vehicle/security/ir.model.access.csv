@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+vehicle_vehicle,vehicle.vehicle,model_vehicle_vehicle,base.group_user,1,1,1,1
+vehicle_make,vehicle.make,model_vehicle_make,base.group_user,1,1,1,1
+vehicle_color,vehicle.color,model_vehicle_color,base.group_user,1,1,1,1

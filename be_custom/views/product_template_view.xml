@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='general_information']/group" position="after">
                 <separator string="Cross Reference Products"/>
-                <field name="cross_ref_product_ids" widget="many2many_tags"
+                <field name="cross_ref_product_ids" widget="many2many_kanban"
                        options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
                 <separator string="Vendors"/>
                 <field name="seller_ids" context="{'default_product_tmpl_id': context.get('product_tmpl_id', active_id)}"/>

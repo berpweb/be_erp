@@ -9,3 +9,10 @@ class PosOrder(models.Model):
 
     session_id = fields.Many2one(default=_default_session)
     is_special_order = fields.Boolean(string='Is a Special Order?')
+    vehicle_id = fields.Many2one('vehicle.vehicle', string="Customer Vehicle")
+
+
+class PosOrderLine(models.Model):
+    _inherit = "pos.order.line"
+
+    type = fields.Selection(related='product_id.type', string='Product Type', readonly=True)

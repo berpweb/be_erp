@@ -13,15 +13,15 @@
                 <group col="4" colspan="4" name="order_fields">
                     <field name="name" string="Order Number"/>
                     <field name="date_order"/>
-                    <field name="session_id" invisible="1"/>
-                    <field name="partner_id" domain="[('customer', '=', True)]" context="{'search_default_customer':1}" attrs="{'readonly': [('state','=','invoiced')]}" required="1"/>
-                    <field name="fiscal_position_id" options="{'no_create': True}" invisible="1"/>
+                    <field name="partner_id" domain="[('customer', '=', True),('user_ids','=',False)]" context="{'search_default_customer':1}" attrs="{'readonly': [('state','=','invoiced')]}" required="1"/>
+                    <field name="vehicle_id" attrs="{'invisible':[('partner_id','=',False)]}" domain="[('partner_id', '=', partner_id)]" context="{'default_partner_id':partner_id}"/>
                 </group>
                 <notebook colspan="4">
                     <page string="Products">
                         <field name="lines" colspan="4" nolabel="1">
-                            <tree string="Order lines" editable="bottom">
-                                <field name="product_id" string="Part Number"/>
+                            <tree string="Order lines" editable="bottom" default_order="type">
+                                <field name="product_id" string="Part Number/Service"/>
+                                <field name="type"/>
                                 <field name="qty"/>
                                 <field name="price_unit" widget="monetary"/>
                                 <field name="discount" widget="monetary" invisible="1"/>
