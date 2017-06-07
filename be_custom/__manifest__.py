@@ -12,9 +12,11 @@
     'installable': True,
     'depends': [
         'point_of_sale',
+        'stock',
         'sales_team',
         'product',
         'vehicle_vehicle',
+        'purchase_allowed_product',
     ],
     'data': [
         'views/pos_config_view.xml',

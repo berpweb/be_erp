@@ -5,7 +5,7 @@
         <field name="name">pos.order.special.form</field>
         <field name="model">pos.order</field>
         <field name="arch" type="xml">
-            <form string="Estimates">
+            <form string="Special Orders">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="draft,paid,done" />
                 </header>
@@ -22,6 +22,7 @@
                         <field name="lines" colspan="4" nolabel="1">
                             <tree string="Order lines" editable="bottom">
                                 <field name="product_id" string="Part Number"/>
+                                <field name="product_received"/>
                                 <field name="qty"/>
                                 <field name="price_unit" widget="monetary"/>
                                 <field name="discount" widget="monetary" invisible="1"/>
@@ -34,7 +35,6 @@
                                 <group col="4">
                                     <field name="product_id" string="Part Number"/>
                                     <field name="qty"/>
-                                    <field name="discount" widget="monetary" invisible="1"/>
                                     <field name="price_unit" widget="monetary"/>
                                     <field name="price_subtotal" widget="monetary" string="Subtotal"/>
                                     <field name="price_subtotal_incl" invisible="1" widget="monetary"/>

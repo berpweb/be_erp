@@ -6,7 +6,16 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" string="Products"
+                       name="open_supplied_products"
+                       icon="fa-shopping-cart" attrs="{'invisible': [('supplier', '=', False)]}"
+                       type="object">
+                </button>
+            </xpath>
             <xpath expr="//notebook" position="before">
+                <label for="use_only_supplied_product" string="Order only supplied products" attrs="{'invisible': [('supplier', '=', False),]}"/>
+                <field name="use_only_supplied_product" attrs="{'invisible': [('supplier', '=', False),]}"/>
                 <separator string="Customer Vehicles" attrs="{'invisible':[('customer','=',False)]}"/>
                 <hr />
                 <field name="vehicle_ids" widget="one2many_list" nolabel="1" attrs="{'invisible':[('customer','=',False)]}"

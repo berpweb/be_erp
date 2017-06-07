@@ -16,3 +16,4 @@ class PosOrderLine(models.Model):
     _inherit = "pos.order.line"
 
     type = fields.Selection(related='product_id.type', string='Product Type', readonly=True)
+    product_received = fields.Boolean(string="Product Received?")
