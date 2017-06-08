@@ -20,6 +20,7 @@
         'purchase_allowed_product',
     ],
     'data': [
+        "wizard/product_template_po_view.xml",
         'views/pos_config_view.xml',
         'views/pos_estimate_order_view.xml',
         'views/pos_special_order_view.xml',

@@ -22,6 +22,7 @@
         'web_searchbar_full_width',
         'web_dialog_size',
         'pos_sale_order_clone',
+        'vehicle_vehicle',
     ],
     'data': [],
     'demo': [],

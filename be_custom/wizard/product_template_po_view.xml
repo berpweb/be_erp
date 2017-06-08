@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+         <record id="product_template_po_form_view" model="ir.ui.view">
+            <field name="name">product.template.po.form</field>
+            <field name="model">product.template.po</field>
+            <field name="arch" type="xml">
+                <form string="Product PO">
+                    <group string="General Information">
+                        <field name="partner_id" string="Vendor" readonly="1"/>
+                        <field name="product_ids" widget="many2many_kanban" readonly="1"
+                               options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
+                    </group>
+                    <footer>
+                        <button name="create_po" string="Create Purchase Order" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="Purchase Products"
+            res_model="product.template.po"
+            src_model="product.template"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            context="{'set_product_ids': True}"
+            id="product_template_po_act_window"/>
+
+</odoo>
