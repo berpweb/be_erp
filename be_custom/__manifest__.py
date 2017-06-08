@@ -27,6 +27,7 @@
         'views/menu_view.xml',
         'views/product_template_view.xml',
         'views/res_partner_view.xml',
+        'views/purchase_view.xml',
     ],
     'demo': [],
     'qweb': [],

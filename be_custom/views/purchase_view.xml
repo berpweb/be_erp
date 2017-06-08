@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_form" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//form//field[@name='date_planned']" position="after">
+                <field name="last_purchase_date" />
+                <label for="last_purchase_product_qty" string="Last Purchase Qty"/>
+                <div>
+                    <field name="last_purchase_product_qty" class="oe_inline"/>
+                    <span class="oe_inline">&#160;</span>
+                    <field name="last_purchase_product_uom" class="oe_inline"/>
+                </div>
+                <field name="last_purchase_price" />
+                <label for="last_purchase_qty_available" string="Qty On Hand"/>
+                <div>
+                    <field name="last_purchase_qty_available" class="oe_inline"/>
+                    <span class="oe_inline">&#160;</span>
+                    <field name="last_purchase_product_uom_qty_available" class="oe_inline"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
