@@ -1,5 +1,55 @@
+from datetime import datetime
+
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+
 from odoo import fields, models, api
 import odoo.addons.decimal_precision as dp
+
+
+class PurchaseOrder(models.Model):
+    _inherit = 'purchase.order'
+
+    @api.onchange('partner_id')
+    def onchange_partner_id(self):
+        res = super(PurchaseOrder, self).onchange_partner_id()
+        if self.partner_id:
+            lost_products = self.env['product.supplierinfo'].search(
+                [('name', '=', self.partner_id.id),
+                 ('product_tmpl_id.is_lost_sale', '=', True)]).mapped('product_tmpl_id').ids
+            self.possible_lost_sales = [(4, product) for product in lost_products]
+        return res
+
+    possible_lost_sales = fields.Many2many('product.template', 'po_lost_prod_tmp_rel',
+                                           'po_id', 'prod_id', string="Possible Lost Sales")
+
+    @api.multi
+    def _create_po_lines(self, products):
+        po_lines = []
+        for product in products:
+            vals =  (0, 0, {
+                        'name': product.name,
+                        'product_qty': 1,
+                        'product_id': product.id,
+                        'product_uom': product.uom_po_id.id,
+                        'price_unit': product.standard_price,
+                        'date_planned': datetime.today().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+                     })
+            po_lines.append(vals)
+        return po_lines
+
+    @api.multi
+    def action_set_lost_products(self):
+        po_lines = self._create_po_lines(self.possible_lost_sales)
+        if po_lines:
+            self.write({'order_line': po_lines})
+
+    @api.multi
+    def button_confirm(self):
+        res = super(PurchaseOrder, self).button_confirm()
+        for _ in self:
+            buy_lost_sale = self.possible_lost_sales & self.order_line.mapped('product_id.product_tmpl_id')
+            buy_lost_sale.write({'is_lost_sale':False, 'available_in_pos':True})
+        return res
 
 
 class PurchaseOrderLine(models.Model):

@@ -18,6 +18,7 @@
         'account',
         'vehicle_vehicle',
         'purchase_allowed_product',
+        'barcodes_generator_product',
     ],
     'data': [
         "wizard/product_template_po_view.xml",
@@ -28,6 +29,7 @@
         'views/product_template_view.xml',
         'views/res_partner_view.xml',
         'views/purchase_view.xml',
+        'views/sale_lost_view.xml',
     ],
     'demo': [],
     'qweb': [],
