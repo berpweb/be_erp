@@ -23,10 +23,10 @@
                 </div>
             </xpath>
             <field name="partner_id" position="after">
-                <label for="possible_lost_sales" attrs="{'invisible': [('partner_id','=',False)]}"/>
+                <label for="possible_lost_sales" attrs="{'invisible': [('partner_id','=',False)]}" string="Lost Sales"/>
 				<div attrs="{'invisible': [('partner_id','=',False)]}">
 					<field name="possible_lost_sales" widget="many2many_tags" attrs="{'readonly': [('state','not in','draft')]}"
-                            domain="[('is_lost_sale','=',True)]"/>
+                            domain="[('is_lost_sale','=',True)]" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
 					<button name="action_set_lost_products" type="object" attrs="{'invisible': [('state','not in','draft')]}"
                             string="Add lost sales products to Purchase Order" class="fa fa-plus-square"/>
 				</div>

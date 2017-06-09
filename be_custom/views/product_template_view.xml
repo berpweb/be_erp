@@ -6,10 +6,11 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
+            <field name="categ_id" position="after">
+                <field name="vendor_id" domain="[('supplier','=',True),('user_ids','=',False)]"
+                       options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}" context="{'default_customer': 0,'default_supplier': 1}"/>
+            </field>
             <xpath expr="//page[@name='general_information']/group" position="after">
-                <separator string="Vendors" name="vendors" class="oe_inline"/>
-                <field name="seller_ids" widget="many2many_tags" class="oe_inline" domain="[('product_tmpl_id','=',id)]"
-                       context="{'default_product_tmpl_id': context.get('product_tmpl_id', active_id)}"/>
                 <separator string="Cross Reference Products" name="cross_ref_product_ids"/>
                 <field name="cross_ref_product_ids" widget="one2many_list"
                        options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
