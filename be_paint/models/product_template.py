@@ -28,10 +28,12 @@ class ProductTemplate(models.Model):
                 procurement_order = Procurement.browse(procurement_id)
                 procurement_order.check()
                 print procurement_id
-                return
                 procurement_order.production_id.action_assign()
                 product_produce = MrpProductProduce.with_context(active_id=procurement_order.production_id.id)
                 product_produce_vals = product_produce.default_get(mrp_product_produce)
                 product_produce = MrpProductProduce.create(product_produce_vals)
                 product_produce.do_produce()
+                procurement_order.production_id.post_inventory()
+                procurement_order.production_id.button_mark_done()
+            print 'done'
             return procurement_order.production_id

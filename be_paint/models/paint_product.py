@@ -125,7 +125,7 @@ class PaintProduct(models.Model):
                     'default_code': main_product['part_number'],
                     'name': main_product['color_name'],
                     'type': 'product',
-                    'route_ids': manufacture_route and manufacture_route.ids or False
+                    'route_ids':[(6, 0, [manufacture_route.id])],
                 })
                 product = ProductTemplate.create(template_defaults)
             if bom_products and product:
@@ -140,7 +140,7 @@ class PaintProduct(models.Model):
                 for bom in bom_products:
                     lines_default = MrpBomLine.default_get(mrp_bom_line_fields)
                     lines_default.update({
-                        'product_id': bom.id,
+                        'product_id': bom.product_variant_id.id,
                         'bom_id': bom_id.id,
                         # 'product_qty': 1,
                     })
