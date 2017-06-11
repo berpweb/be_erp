@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_paint_product_form">
+        <field name="name">paint.product.form</field>
+        <field name="model">paint.product</field>
+        <field name="arch" type="xml">
+            <form string="Paint File">
+                <group>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="data_file" filename="filename" placeholder="Choose a file to import..."/>
+                        <field name="filename" invisible="1"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_paint_product_tree">
+        <field name="name">paint.product.tree</field>
+        <field name="model">paint.product</field>
+        <field name="arch" type="xml">
+            <tree string="Paint File">
+                <field name="name"/>
+                <field name="filename"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_paint_product" model="ir.actions.act_window">
+        <field name="name">Paint File</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">paint.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_paint_base" name="Paint" sequence="35" groups="base.group_user" web_icon="base,static/description/modules.png"/>
+    <menuitem id="menu_paint_parent" parent="menu_paint_base" name="Paint" sequence="40" groups="base.group_user"/>
+    <menuitem id="menu_paint_files" parent="menu_paint_parent" name="Paint Files" action="action_paint_product" sequence="50" groups="base.group_user"/>
+
+</odoo>
