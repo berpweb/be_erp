@@ -24,16 +24,23 @@ class PaintProduct(models.Model):
     name = fields.Char("Date")
     data_file = fields.Binary('Paint File', attachment=True, required=True)
     filename = fields.Char()
+    production_id = fields.Many2one('mrp.production', 'Production')
+    procurement_id = fields.Many2one('procurement.order', 'Procurement')
 
     @api.multi
     def action_build_paint_product(self):
+        _logger.info("Starting to read excel file")
         try:
             rows = self._read_xls()
             data = [list(row) for row in rows if any(row)]
             if data:
                 main_product = self._prepare_paint_product(data)
+                _logger.info("Prepared Main Product - %s", main_product)
                 if main_product:
-                    self._build_paint_product(main_product)
+                    production, procurement_order = self._build_paint_product(main_product)
+                    _logger.info("Got production - %s and procurement - %s", production, procurement_order)
+                    self.production_id = production
+                    self.procurement_id = procurement_order
         except Exception, error:
             _logger.info("Error during paint product building", exc_info=True)
 
@@ -82,7 +89,6 @@ class PaintProduct(models.Model):
 
     @api.model
     def _prepare_paint_product(self, rows):
-        ProductTemplate = self.env['product.template']
         main_product = {}
         for row in rows[:5]:
             if row[0] == 'Chip number:':
@@ -108,17 +114,18 @@ class PaintProduct(models.Model):
         MrpBom = self.env['mrp.bom']
         MrpBomLine = self.env['mrp.bom.line']
         bom_products = []
-        bom_lines = []
         product_template_fields = ProductTemplate.fields_get()
         mrp_bom_fields = MrpBom.fields_get()
         mrp_bom_line_fields = MrpBomLine.fields_get()
         if main_product:
-            for bom in main_product['bom_products']:
-                bom_products.append(ProductTemplate.search([('default_code', '=', bom[0])]))
             product = ProductTemplate.search([('default_code','=',main_product['part_number'])])
             if product:
+                _logger.info("Main Product already exists. ID - %s, Name - %s", product.id, product.name)
                 pass # update to existing product, instead of creating new one
             else:
+                for bom in main_product['bom_products']:
+                    bom_products.append(ProductTemplate.search([('default_code', '=', bom[0])]))
+                _logger.info("Created BOM Products - %s", bom_products)
                 template_defaults = ProductTemplate.default_get(product_template_fields)
                 manufacture_route = self.env.ref('mrp.route_warehouse0_manufacture', raise_if_not_found=False)
                 template_defaults.update({
@@ -128,23 +135,25 @@ class PaintProduct(models.Model):
                     'route_ids':[(6, 0, [manufacture_route.id])],
                 })
                 product = ProductTemplate.create(template_defaults)
-            if bom_products and product:
-                bom_defaults = MrpBom.default_get(mrp_bom_fields)
-                bom_defaults.update({
-                    'product_tmpl_id': product.id,
-                    'product_qty': 1,
-                    # 'bom_line_ids': bom_lines if bom_lines else False
-                })
-                bom_id = MrpBom.create(bom_defaults)
-                bom_lines_defaults = MrpBomLine.default_get(mrp_bom_line_fields)
-                for bom in bom_products:
-                    lines_default = MrpBomLine.default_get(mrp_bom_line_fields)
-                    lines_default.update({
-                        'product_id': bom.product_variant_id.id,
-                        'bom_id': bom_id.id,
-                        # 'product_qty': 1,
+                _logger.info("Created New Product - %s", product.id)
+                if bom_products and product:
+                    bom_defaults = MrpBom.default_get(mrp_bom_fields)
+                    bom_defaults.update({
+                        'product_tmpl_id': product.id,
+                        'product_qty': 1,
                     })
-                    # bom_lines.append(lines_default)
-                    bom_lines_created = MrpBomLine.create(lines_default)
-                # bom_id.bom_line_ids = bom_lines if bom_lines else False
-                product.create_mo()
+                    bom = MrpBom.create(bom_defaults)
+                    _logger.info("Created BOM - %s for Product - %s", bom.id, product.id)
+                    for bom_product in bom_products:
+                        lines_default = MrpBomLine.default_get(mrp_bom_line_fields)
+                        lines_default.update({
+                            'product_id': bom_product.product_variant_id.id,
+                            'bom_id': bom.id,
+                            # 'product_qty': 1,
+                        })
+                        bom_line = MrpBomLine.create(lines_default)
+                        _logger.info("Created BOM Line - %s for BOM - %s with Product - %s",
+                                     bom_line.id, bom.id, bom_product.product_variant_id.id)
+            if product:
+                _logger.info("Creating MO for ID - %s, Product - %s", product.id, product.name)
+                return product.create_mo()

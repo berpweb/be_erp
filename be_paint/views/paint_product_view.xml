@@ -13,6 +13,8 @@
                 <group>
                     <group>
                         <field name="name"/>
+                        <field name="production_id" attrs="{'invisible': [('production_id','=',False)]}" readonly="1"/>
+                        <field name="procurement_id" attrs="{'invisible': [('procurement_id','=',False)]}" readonly="1"/>
                     </group>
                     <group>
                         <field name="data_file" filename="filename" placeholder="Choose a file to import..."/>
