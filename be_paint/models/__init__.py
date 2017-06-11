@@ -1,2 +1,3 @@
 import file_scheduler
 import paint_product
+import product_template

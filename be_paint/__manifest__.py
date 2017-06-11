@@ -12,6 +12,7 @@
     'installable': True,
     'depends': [
         'base',
+        'mrp',
     ],
     'data': [
         "security/ir.model.access.csv",
